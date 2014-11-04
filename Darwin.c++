@@ -4,6 +4,11 @@
 #include <string>
 #include <stdexcept>
 
+
+//---------
+// Species
+//---------
+
 void Species::addInstruction(std::string in){
     instruction instruction;
 
@@ -39,31 +44,68 @@ void Species::addInstruction(std::string in){
     _instructions.push_back(instruction);
 }
 
-void executeInstruction(int pc, front_t front){
-    inst_t instruction = instructions[i];
 
-    while (instruction._i > INFECT) {
+//Add creature parameter?
+void Species::executeInstruction(int pc, front_t front){
+    instruction instruction = _instructions[pc];
+
+
+    //Perform controls till reach an action
+    while (instruction._i > INFECT && instruction._n < (int) _instructions.size()) {
         switch (instruction._i) {
             case GO:
-                instruction = instructions[instruction._n];
+                instruction = _instructions[instruction._n];
+                break;
             case IF_EMPTY:
                 if (front == EMPTY) {
-                    instruction = instructions[instruction._n];
-                } else {
-                    instruction = instructions[++instruction._n];
+                    instruction = _instructions[instruction._n];
+                } else if(++instruction._n < (int) _instructions.size()) {
+                    instruction = _instructions[++instruction._n];
                 }
+                break;
+            case IF_ENEMY:
+                  if(front == ENEMY){
+                    instruction = _instructions[instruction._n];
+                  } else if(++instruction._n < (int) _instructions.size()){
+                    instruction = _instructions[++instruction._n];
+                  } 
+                break;
+            case IF_RANDOM:
+                std::cout << "Random" << std::endl;
+                break;
+            case IF_WALL:
+                if(front == WALL){
+                  instruction = _instructions[instruction._n];
+                }else if(++instruction._n < (int) _instructions.size()){
+                  instruction = _instructions[++instruction._n];
+                }
+                break;
+        }
+    }
 
-  }
+    //Creature performs action and sets counter
+
 }
-}
 
+//----------
+// Creature
+//----------
 
-
-
+//Creature Constructor
 Creature::Creature(Species s, std::string dir): _s(s){
 
-  //TODO BARBEQUE: enums
-
+    //Set direction of the creature
+    if(dir == "north"){
+      _dir = NORTH;
+    }else if(dir == "south"){
+      _dir = SOUTH;
+    }else if(dir == "east"){
+      _dir = EAST;
+    }else if(dir == "west"){
+      _dir = WEST;
+    }else{
+      throws std::invalid_argument("Invalid direction.");
+    }
 
 }
 
@@ -71,4 +113,8 @@ Creature::Creature(Species s, std::string dir): _s(s){
 
 
 
+
+//--------
+// Darwin
+//--------
 

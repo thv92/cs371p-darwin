@@ -7,7 +7,7 @@
 
 enum inst_t{HOP, LEFT, RIGHT, INFECT, GO, IF_EMPTY, IF_ENEMY, IF_RANDOM, IF_WALL};
 enum dir_t {NORTH, SOUTH, EAST, WEST};
-enum front_t {EMPTY, ENEMY, WALL}
+enum front_t {EMPTY, ENEMY, WALL};
 
 
 struct instruction{
@@ -21,8 +21,9 @@ struct instruction{
 class Species{
 
     public:
+
         void addInstruction(std::string in);
-        void executeInstruction(int c);
+        void executeInstruction(int c, front_t front);
     private:
         std::vector<instruction> _instructions;
         std::string _name;
@@ -33,7 +34,7 @@ class Creature{
 
     public:
         Creature(Species s, std::string dir);
-    
+        
     private:
         Species _s;
         dir_t _dir;
