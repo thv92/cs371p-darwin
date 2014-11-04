@@ -7,14 +7,13 @@
 
 enum inst_t{HOP, LEFT, RIGHT, INFECT, GO, IF_EMPTY, IF_ENEMY, IF_RANDOM, IF_WALL};
 enum dir_t {NORTH, SOUTH, EAST, WEST};
+enum front_t {EMPTY, ENEMY, WALL}
 
 
 struct instruction{
     int _n;
     inst_t _i;
-
 };
-
 
 
 //Creation: takes in name of species
@@ -26,6 +25,7 @@ class Species{
         void executeInstruction(int c);
     private:
         std::vector<instruction> _instructions;
+        std::string _name;
 };
 
 //Execute instructions?
