@@ -22,6 +22,10 @@
 int main () {
     using namespace std;
 
+    Darwin board(10, 10);
+    board.printGrid();
+    Darwin board2(101, 101);
+    board2.printGrid();
     // ----
     // food
     // ----

@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include <array>
 
 enum inst_t{HOP, LEFT, RIGHT, INFECT, GO, IF_EMPTY, IF_ENEMY, IF_RANDOM, IF_WALL};
 enum dir_t {NORTH, SOUTH, EAST, WEST};
@@ -24,10 +25,12 @@ class Species{
 
         void addInstruction(std::string in);
         void executeInstruction(int c, front_t front);
+        Species();
     private:
         std::vector<instruction> _instructions;
-        std::string _name;
-};
+        static int species_count; //Species recognition
+        const int _name;          //Name of species  
+};  
 
 //Execute instructions?
 class Creature{
@@ -38,7 +41,7 @@ class Creature{
     private:
         Species _s;
         dir_t _dir;
-        int pc;
+        int _pc;
 
 };
 
@@ -49,9 +52,14 @@ class Creature{
 class Darwin{
 
     public:
-
+        Darwin(int x, int y);
+        void addCreature(Creature s, int x, int y);
+        void printGrid();
     private:
-
+        const int _height;
+        const int _width;
+        const int _size;
+        std::vector<Creature*> _grid;
 };
 
 

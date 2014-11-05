@@ -3,11 +3,15 @@
 #include <iostream>
 #include <string>
 #include <stdexcept>
-
+#include <iomanip>
 
 //---------
 // Species
 //---------
+
+int Species::species_count;
+Species::Species():_name(++species_count){}
+
 
 void Species::addInstruction(std::string in){
     instruction instruction;
@@ -80,6 +84,8 @@ void Species::executeInstruction(int pc, front_t front){
                   instruction = _instructions[++instruction._n];
                 }
                 break;
+            default:
+                break;
         }
     }
 
@@ -104,10 +110,15 @@ Creature::Creature(Species s, std::string dir): _s(s){
     }else if(dir == "west"){
       _dir = WEST;
     }else{
-      throws std::invalid_argument("Invalid direction.");
+      throw std::invalid_argument("Invalid direction.");
     }
-
 }
+
+//------------------
+// Creature Actions
+//------------------
+
+//parameters for actions(pc)
 
 
 
@@ -118,3 +129,38 @@ Creature::Creature(Species s, std::string dir): _s(s){
 // Darwin
 //--------
 
+Darwin::Darwin(int x, int y): _height(x), _width(y), _size(x*y), _grid(_size){}
+
+void Darwin::addCreature(Creature s, int x, int y){
+    int index = x + y * _width;
+    _grid[index] = &s;
+}
+
+// index = X + Y * Width;
+// Y = (int)(index / Width)
+// X = index - (Y * Width)
+
+
+void Darwin::printGrid(){
+    std::cout << std::setw(4) << " ";
+    for(int i = 0; i < _width; ++i)
+        std::cout << std::setw(4) << i;
+    std::cout << std::endl;
+
+   int i = 0;
+   while(i < _size){
+        std::cout << std::setw(4) << i/_width;
+        for(int j = 0; j < _width; ++j){
+
+            int y = (int) (j/_width);
+            int x = j - (y - _width); 
+
+            std::cout << std::setw(4) << ".";
+        }
+        std::cout << std::endl;
+
+        i+=_width;
+    }
+
+    std::cout << std::endl;
+}
