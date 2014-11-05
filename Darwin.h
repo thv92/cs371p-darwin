@@ -6,9 +6,9 @@
 #include <string>
 #include <array>
 
-enum inst_t{HOP, LEFT, RIGHT, INFECT, GO, IF_EMPTY, IF_ENEMY, IF_RANDOM, IF_WALL};
-enum dir_t {NORTH, SOUTH, EAST, WEST};
-enum front_t {EMPTY, ENEMY, WALL};
+enum inst_t { HOP, LEFT, RIGHT, INFECT, GO, IF_EMPTY, IF_ENEMY, IF_RANDOM, IF_WALL };
+enum dir_t { NORTH, SOUTH, EAST, WEST };
+enum front_t { EMPTY, ENEMY, WALL };
 
 
 struct instruction{

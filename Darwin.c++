@@ -4,6 +4,7 @@
 #include <string>
 #include <stdexcept>
 #include <iomanip>
+#include <cstdlib>
 
 //---------
 // Species
@@ -50,47 +51,57 @@ void Species::addInstruction(std::string in){
 
 
 //Add creature parameter?
-void Species::executeInstruction(int pc, front_t front){
+inst_t Species::executeInstruction(int& pc, front_t front){
+    
     instruction instruction = _instructions[pc];
-
 
     //Perform controls till reach an action
     while (instruction._i > INFECT && instruction._n < (int) _instructions.size()) {
         switch (instruction._i) {
             case GO:
-                instruction = _instructions[instruction._n];
+                pc = instruction._n;
+                instruction = _instructions[pc];
                 break;
             case IF_EMPTY:
                 if (front == EMPTY) {
-                    instruction = _instructions[instruction._n];
+                    pc = instruction._n;
+                    instruction = _instructions[pc];
                 } else if(++instruction._n < (int) _instructions.size()) {
-                    instruction = _instructions[++instruction._n];
+                    instruction = _instructions[++pc];
                 }
                 break;
             case IF_ENEMY:
                   if(front == ENEMY){
-                    instruction = _instructions[instruction._n];
+                    pc = instruction._n;
+                    instruction = _instructions[pc];
                   } else if(++instruction._n < (int) _instructions.size()){
-                    instruction = _instructions[++instruction._n];
+                    instruction = _instructions[++pc];
                   } 
                 break;
             case IF_RANDOM:
-                std::cout << "Random" << std::endl;
+                r = rand()
+                if(r % 2 == 0) {
+                    pc = instruction._n;
+                    instruction = _instructions[pc];
+                }
+                else {
+                    instruction = _instructions[++pc]
+                }
+                // std::cout << "Random" << std::endl;
                 break;
             case IF_WALL:
                 if(front == WALL){
-                  instruction = _instructions[instruction._n];
+                    pc = instruction._n;
+                    instruction = _instructions[pc];
                 }else if(++instruction._n < (int) _instructions.size()){
-                  instruction = _instructions[++instruction._n];
+                  instruction = _instructions[++pc];
                 }
                 break;
             default:
                 break;
         }
     }
-
-    //Creature performs action and sets counter
-
+    return instruction;
 }
 
 //----------
