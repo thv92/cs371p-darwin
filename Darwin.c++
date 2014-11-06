@@ -68,10 +68,12 @@ inst_t Species::executeControls(int& pc, front_t front){
     while (instruction._i > INFECT) {
         switch (instruction._i) {
             case GO:
+                if(DEBUGSC) std::cout << " GO " << std::endl;
                 pc = instruction._n;
                 instruction = _instructions[pc];
                 break;
             case IF_EMPTY:
+                if(DEBUGSC) std::cout << " IF_EMPTY "  << std::endl;
                 if (front == EMPTY) {
                     pc = instruction._n;
                     instruction = _instructions[pc];
@@ -80,6 +82,7 @@ inst_t Species::executeControls(int& pc, front_t front){
                 }
                 break;
             case IF_ENEMY:
+                if(DEBUGSC) std::cout <<  " IF_ENEMY " << std::endl;
                   if(front == ENEMY){
                     pc = instruction._n;
                     instruction = _instructions[pc];
@@ -88,6 +91,7 @@ inst_t Species::executeControls(int& pc, front_t front){
                   } 
                 break;
             case IF_RANDOM:
+                if(DEBUGSC) std::cout <<  "IF_RANDOM" << std::endl;
                 r = rand();
                 if(r % 2 == 0) {
                     pc = instruction._n;
@@ -97,6 +101,7 @@ inst_t Species::executeControls(int& pc, front_t front){
                 }
                 break;
             case IF_WALL:
+                if(DEBUGSC) std::cout <<  " IF_WALL " << std::endl;
                 if(front == WALL){
                     pc = instruction._n;
                     instruction = _instructions[pc];
@@ -148,19 +153,23 @@ bool Creature::execute(front_t front, Creature& other) {
     int d;
     switch(instruction) {
         case HOP:
+            if(DEBUGSC) std::cout <<  " HOP " << std::endl;
             break;
         case LEFT:
+            if(DEBUGSC) std::cout << " LEFT "  << std::endl;
             d = static_cast<int>(_dir);
-            ++d;
+            --d;
             _dir = static_cast<dir_t>(d);
             _dir = _dir < 0 ? WEST : _dir; 
             break;
         case RIGHT:
+            if(DEBUGSC) std::cout <<  " RIGHT " << std::endl;
             d = static_cast<int>(_dir);
             ++d;
             _dir = static_cast<dir_t>(d % 5);
             break;
         case INFECT:
+            if(DEBUGSC) std::cout <<  " INFECT " << std::endl;
             if(front == ENEMY) {
                 dir_t temp = other._dir;
                 other = *this;
