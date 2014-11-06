@@ -1,11 +1,13 @@
 
 #include "Darwin.h"
 #include <iostream>
-#include <string>
 #include <stdexcept>
 #include <iomanip>
 #include <cstdlib>
 #include <cassert>
+#include <vector>
+#include <string>
+#include <unordered_map>
 
 //---------
 // Species
@@ -105,7 +107,9 @@ inst_t Species::executeControls(int& pc, front_t front){
 //----------
 
 //Creature Constructor
-Creature::Creature(Species s, std::string dir): _s(s){
+Creature::Creature(Species s, std::string dir)
+    : _s(s), _pc(0) {
+
     //Set direction of the creature
     if(dir == "north"){
       _dir = NORTH;
@@ -164,16 +168,31 @@ bool Creature::execute(front_t front, Creature& other) {
 // Darwin
 //--------
 
-Darwin::Darwin(int w, int h, int t): _height(h), _width(w), _size(w*h), _grid(_size), _turns(t){}
+Darwin::Darwin(int w, int h, int t): _height(h), _width(w), _size(w*h), _turns(t), _grid(_size) {}
 
-void Darwin::addCreature(Creature& s, int r, int c){
-    int index = r + c * _width;
-    _grid[index] = s;
+void Darwin::addCreature(Creature s, int r, int c){
+    int position = r + c * _width;
+    _creatures.push_back(s);
+    int id = _creatures.size() - 1;
+    _grid[position] = id;
+    _positions.insert(std::pair<int, int>(id, position));
 }
 
 void Darwin::simulate(){
     while (_turns > 0) {
-                                                
+        std::unordered_map<int,int>::iterator b = _positions.begin();
+        std::unordered_map<int,int>::iterator e = _positions.end();
+
+        while (b != e) {
+            int id = b->first;
+            int pos = b->second;
+            Creature c = _creatures[id];
+            dir_t d = c.getDirection();
+            // determine whats around creature based on direction and grid + pos
+            // Execute the turn with c.execute()
+            // Potentially update pos (b->second) and use that to update grid
+            ++b;
+        }
         --_turns;
     }
 }

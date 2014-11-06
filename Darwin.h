@@ -4,7 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <string>
-#include <array>
+#include <unordered_map>
 
 enum inst_t { HOP, LEFT, RIGHT, INFECT, GO, IF_EMPTY, IF_ENEMY, IF_RANDOM, IF_WALL };
 enum dir_t { NORTH, EAST, SOUTH, WEST };
@@ -47,15 +47,18 @@ class Creature{
 class Darwin{
 
     public:
-        Darwin(int x, int y);
-        void addCreature(Creature s, int x, int y);
+        Darwin(int x, int y, int t);
+        void addCreature(Creature s, int r, int c);
         void printGrid();
+        void simulate();
     private:
         const int _height;
         const int _width;
         const int _size;
         int _turns;
-        std::vector<Creature> _grid;
+        std::vector<Creature> _creatures;
+        std::vector<int> _grid;
+        std::unordered_map<int, int> _positions;
 };
 
 
