@@ -7,8 +7,8 @@
 #include <array>
 
 enum inst_t { HOP, LEFT, RIGHT, INFECT, GO, IF_EMPTY, IF_ENEMY, IF_RANDOM, IF_WALL };
-enum dir_t { NORTH, SOUTH, EAST, WEST };
-enum front_t { EMPTY, ENEMY, WALL };
+enum dir_t { NORTH, EAST, SOUTH, WEST };
+enum front_t { EMPTY, ENEMY, WALL, FRIEND };
 
 
 struct instruction{
@@ -16,27 +16,24 @@ struct instruction{
     inst_t _i;
 };
 
-
-//Creation: takes in name of species
-//Takes in instructions
 class Species{
 
     public:
 
         void addInstruction(std::string in);
-        void executeInstruction(int c, front_t front);
-        Species();
+        inst_t executeControls(int& pc, front_t front);
+        Species(std::string n);
     private:
         std::vector<instruction> _instructions;
-        static int species_count; //Species recognition
-        const int _name;          //Name of species  
+        std::string _name;          //Name of species  
 };  
 
-//Execute instructions?
 class Creature{
 
     public:
         Creature(Species s, std::string dir);
+        dir_t getDirection();
+        bool execute(front_t front, Creature& other);
         
     private:
         Species _s;
@@ -44,8 +41,6 @@ class Creature{
         int _pc;
 
 };
-
-
 
 //Create grid
 //Add creatures
@@ -59,7 +54,8 @@ class Darwin{
         const int _height;
         const int _width;
         const int _size;
-        std::vector<Creature*> _grid;
+        int _turns;
+        std::vector<Creature> _grid;
 };
 
 

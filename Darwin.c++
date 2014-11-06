@@ -5,14 +5,13 @@
 #include <stdexcept>
 #include <iomanip>
 #include <cstdlib>
+#include <cassert>
 
 //---------
 // Species
 //---------
 
-int Species::species_count;
-Species::Species():_name(++species_count){}
-
+Species::Species(std::string n):_name(n){}
 
 void Species::addInstruction(std::string in){
     instruction instruction;
@@ -50,13 +49,12 @@ void Species::addInstruction(std::string in){
 }
 
 
-//Add creature parameter?
-inst_t Species::executeInstruction(int& pc, front_t front){
+inst_t Species::executeControls(int& pc, front_t front){
     
     instruction instruction = _instructions[pc];
-
+    int r;
     //Perform controls till reach an action
-    while (instruction._i > INFECT && instruction._n < (int) _instructions.size()) {
+    while (instruction._i > INFECT) {
         switch (instruction._i) {
             case GO:
                 pc = instruction._n;
@@ -66,7 +64,7 @@ inst_t Species::executeInstruction(int& pc, front_t front){
                 if (front == EMPTY) {
                     pc = instruction._n;
                     instruction = _instructions[pc];
-                } else if(++instruction._n < (int) _instructions.size()) {
+                } else {
                     instruction = _instructions[++pc];
                 }
                 break;
@@ -74,26 +72,24 @@ inst_t Species::executeInstruction(int& pc, front_t front){
                   if(front == ENEMY){
                     pc = instruction._n;
                     instruction = _instructions[pc];
-                  } else if(++instruction._n < (int) _instructions.size()){
+                  } else {
                     instruction = _instructions[++pc];
                   } 
                 break;
             case IF_RANDOM:
-                r = rand()
+                r = rand();
                 if(r % 2 == 0) {
                     pc = instruction._n;
                     instruction = _instructions[pc];
+                } else {
+                    instruction = _instructions[++pc];
                 }
-                else {
-                    instruction = _instructions[++pc]
-                }
-                // std::cout << "Random" << std::endl;
                 break;
             case IF_WALL:
                 if(front == WALL){
                     pc = instruction._n;
                     instruction = _instructions[pc];
-                }else if(++instruction._n < (int) _instructions.size()){
+                } else {
                   instruction = _instructions[++pc];
                 }
                 break;
@@ -101,7 +97,7 @@ inst_t Species::executeInstruction(int& pc, front_t front){
                 break;
         }
     }
-    return instruction;
+    return instruction._i;
 }
 
 //----------
@@ -110,7 +106,6 @@ inst_t Species::executeInstruction(int& pc, front_t front){
 
 //Creature Constructor
 Creature::Creature(Species s, std::string dir): _s(s){
-
     //Set direction of the creature
     if(dir == "north"){
       _dir = NORTH;
@@ -128,23 +123,59 @@ Creature::Creature(Species s, std::string dir): _s(s){
 //------------------
 // Creature Actions
 //------------------
+dir_t Creature::getDirection() {
+    return _dir;
+}
 
-//parameters for actions(pc)
-
-
-
-
-
+bool Creature::execute(front_t front, Creature& other) {
+    inst_t instruction = _s.executeControls(_pc, front);
+    int d;
+    switch(instruction) {
+        case HOP:
+            break;
+        case LEFT:
+            d = static_cast<int>(_dir);
+            ++d;
+            _dir = static_cast<dir_t>(d);
+            _dir = _dir < 0 ? WEST : _dir; 
+            break;
+        case RIGHT:
+            d = static_cast<int>(_dir);
+            ++d;
+            _dir = static_cast<dir_t>(d % 5);
+            break;
+        case INFECT:
+            if(front == ENEMY) {
+                dir_t temp = other._dir;
+                other = *this;
+                other._pc = 0;
+                other._dir = temp;
+            }
+            break;
+        default:
+            assert(false);
+            break;
+    }
+    ++_pc;
+    return instruction == HOP;
+}
 
 //--------
 // Darwin
 //--------
 
-Darwin::Darwin(int x, int y): _height(x), _width(y), _size(x*y), _grid(_size){}
+Darwin::Darwin(int w, int h, int t): _height(h), _width(w), _size(w*h), _grid(_size), _turns(t){}
 
-void Darwin::addCreature(Creature s, int x, int y){
-    int index = x + y * _width;
-    _grid[index] = &s;
+void Darwin::addCreature(Creature& s, int r, int c){
+    int index = r + c * _width;
+    _grid[index] = s;
+}
+
+void Darwin::simulate(){
+    while (_turns > 0) {
+                                                
+        --_turns;
+    }
 }
 
 // index = X + Y * Width;
