@@ -8,9 +8,10 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
+#include <algorithm>
 
 #define DEBUGSC false
-#define DEBUGD false
+#define DEBUGD true
 
 //---------
 // Species
@@ -195,6 +196,7 @@ bool Creature::execute(front_t front, Creature& other) {
     return instruction == HOP;
 }
 
+
 bool Creature::compareSpecies(const Creature &rhs){
     // std::cout << " Creature compare species" << std::endl;
     return (*this)._s == rhs._s;
@@ -209,55 +211,81 @@ Darwin::Darwin(int h, int w, int t): _height(h), _width(w), _size(w*h), _turns(t
 
 void Darwin::addCreature(Creature s, int r, int c){
     int position = c + r * _width;
-    _creatures.push_back(s);
-    int id = _creatures.size() - 1;
+    int id = _creaturesOnGrid.size() + 1;
+    
+    _creaturesOnGrid.push_back(id);
+    
     _grid[position] = id;
-    _positions.insert(std::pair<int, int>(id, position));
+
+    creatureInfo toAdd = {s, position};
+    _creatureInfo.insert(std::pair<int, creatureInfo>(id, toAdd));
 }
 
+// bool Darwin::myCompare(int id1, int id2) {
+//     return _creatureInfo.at(id1).pos < _creatureInfo.at(id2).pos;
+// }
+
+void Darwin::orderCreatureTurn(){
+        // std::sort(_creaturesOnGrid.begin(), _creaturesOnGrid.end(), myCompare);
+    std::vector<int> temp;
+    for(int i= 0; i < _size; ++i){
+        if(_grid[i] > 0){
+            temp.push_back(_grid[i]);
+        }
+    }
+    _creaturesOnGrid = temp;
+}
+
+
 void Darwin::simulate(){
-    printGrid();
-    while (_turns > 0) {
-        std::unordered_map<int,int>::iterator b = _positions.begin();
-        std::unordered_map<int,int>::iterator e = _positions.end();
 
-        while (b != e) {
-            int id = b->first;
-            int pos = b->second;
 
-            Creature *c = &_creatures[id];
-            dir_t dir = c->getDirection();
+    while(_turns > 0){
+        printGrid();
+        orderCreatureTurn();
+        for(int i = 0; i < (int) _creaturesOnGrid.size(); ++i){
+            creatureInfo &info = _creatureInfo.at(_creaturesOnGrid[i]);
+            int id = _creaturesOnGrid[i];
+            int pos = info.pos;
+            
 
-            if(DEBUGD) std::cout << " Creature Direction: " << dir << " " << c->getSpeciesName()<< std::endl;
+            // if(DEBUGD) std::cout << "Inside of for loop for simulate: " << std::endl;
+            // if(DEBUGD) std::cout << "i: "  << i << " id: " << id << " pos: " << pos << std::endl;           
+            
+            Creature &c = info.c;
+            dir_t dir = c.getDirection();
 
-            std::pair<front_t, int> x = front(pos, dir);
+            if(DEBUGD) std::cout << " dir: " << dir << std::endl;
 
+            std::pair<front_t, int> whatsInFront = front(pos, dir);
+            
             Creature *other;
 
-            if(x.second > -1 && x.second < (int) _creatures.size())
-                other = &_creatures[x.second];
+            if(whatsInFront.second > -1)
+                other = &_creatureInfo.at(whatsInFront.second).c;
             else
-                other = c;
+                other = &c;
 
-            bool hopped = c->execute(x.first, *other);
+            bool hopped = c.execute(whatsInFront.first, *other);
 
-            if (hopped) {
+            if(hopped){
                 std::pair<int, int> fc = front_coordinate(pos, dir);
-                
                 int new_pos = coordToPosition(fc);
 
-                if(!in_bounds(fc) && x.first == EMPTY){
-                    _positions[id] = new_pos;
+                if(!in_bounds(fc) && whatsInFront.first == EMPTY){
+                    _creatureInfo.at(whatsInFront.second).pos = new_pos;
                     _grid[pos] = -1;
                     _grid[new_pos] = id;
                 }
             }
-            ++b;
         }
-        printGrid();
+
         --_turns;
     }
+
 }
+
+
 
 std::pair<int, int> Darwin::front_coordinate(int pos, dir_t dir) {
     int row = pos/_width;
@@ -301,17 +329,17 @@ std::pair<front_t, int> Darwin::front(int pos, dir_t dir) {
     int front_pos = coordToPosition(fc);
 
     assert(front_pos < (int) _grid.size());
-    int id = _grid[front_pos];
+    int idInFront = _grid[front_pos];
     if(DEBUGD) std::cout << " Inside front function " <<  fc.first << " " << fc.second<< std::endl;
     if(DEBUGD) std::cout << " Inside front function " <<  pos << " " << front_pos << std::endl;
     
-    if (id == -1) {
+    if (idInFront == -1) {
         return std::pair<front_t, int>(EMPTY, -1);
     }
     else {
-        bool status = _creatures[_grid[pos]].compareSpecies(_creatures[id]);
+        bool status = _creatureInfo.at(_grid[pos]).c.compareSpecies(_creatureInfo.at(idInFront).c);
         if(DEBUGD) std::cout << "status: " << status <<std::endl;
-        return status ? std::pair<front_t, int>(FRIEND, -1) : std::pair<front_t, int>(ENEMY, id);
+        return status ? std::pair<front_t, int>(FRIEND, -1) : std::pair<front_t, int>(ENEMY, idInFront);
     }
     
 }
@@ -328,9 +356,13 @@ void Darwin::printGrid(){
     	std::cout << (i/_height) % 10<< " ";
         for(int col = 0; col < _width; ++col){
         	int id = _grid[i];
-        	if(id != -1) {
-	            std::unordered_map<int, int>::iterator getCreatureFromMap = _positions.find(_grid[i]);
-	            std::cout << _creatures[getCreatureFromMap->first].getSpeciesName().substr(0,1);
+        	
+            if(id != -1) {
+	            std::unordered_map<int, creatureInfo>::iterator getCreatureFromMap = _creatureInfo.find(_grid[i]);
+	            
+                if(getCreatureFromMap != _creatureInfo.end()){
+                    std::cout << getCreatureFromMap->second.c.getSpeciesName().substr(0,1);
+                }
             }else{
                 std::cout << ".";
             }

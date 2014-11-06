@@ -47,6 +47,12 @@ class Creature{
 
 };
 
+
+struct creatureInfo{
+    Creature c;
+    int pos;
+};
+
 //Create grid
 //Add creatures
 class Darwin{
@@ -61,14 +67,25 @@ class Darwin{
         const int _width;
         const int _size;
         int _turns;
-        std::vector<Creature> _creatures;
+
+        // std::vector<Creature> _creatures;
         std::vector<int> _grid;
-        std::unordered_map<int, int> _positions;
+        // std::unordered_map<int, int> _positions;
+
+        //Thien defined
+        std::unordered_map<int, creatureInfo> _creatureInfo;
+        std::vector<int> _creaturesOnGrid;
+
+
         std::pair<front_t, int> front(int pos, dir_t dir);
         std::pair<int, int> front_coordinate(int pos, dir_t dir);
         std::pair<int, int> new_position(int pos, dir_t dir);
         bool in_bounds(std::pair<int, int> coord);
         int coordToPosition(std::pair<int, int> coord);
+
+        //Thien defined
+        void orderCreatureTurn();
+        // bool myCompare(int id1, int id2);
 };
 
 
