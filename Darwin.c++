@@ -241,10 +241,11 @@ void Darwin::simulate(){
                 std::pair<int, int> fc = front_coordinate(pos, dir);
                 
                 int new_pos = coordToPosition(fc);
-
-                _positions[id] = new_pos;
-                _grid[pos] = -1;
-                _grid[new_pos] = id;
+                if(!in_bounds(fc)){
+                    _positions[id] = new_pos;
+                    _grid[pos] = -1;
+                    _grid[new_pos] = id;
+                }
             }
             ++b;
         }
