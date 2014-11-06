@@ -8,7 +8,7 @@
 
 enum inst_t { HOP, LEFT, RIGHT, INFECT, GO, IF_EMPTY, IF_ENEMY, IF_RANDOM, IF_WALL };
 enum dir_t { NORTH, EAST, SOUTH, WEST };
-enum front_t { EMPTY, ENEMY, WALL, FRIEND };
+enum front_t { EMPTY, ENEMY, WALL, FRIEND};
 
 
 struct instruction{
@@ -19,10 +19,12 @@ struct instruction{
 class Species{
 
     public:
-
+        Species();
         void addInstruction(std::string in);
         inst_t executeControls(int& pc, front_t front);
         Species(std::string n);
+        bool operator==(const Species &rhs);
+
     private:
         std::vector<instruction> _instructions;
         std::string _name;          //Name of species  
@@ -31,9 +33,11 @@ class Species{
 class Creature{
 
     public:
+        Creature();
         Creature(Species s, std::string dir);
         dir_t getDirection();
         bool execute(front_t front, Creature& other);
+        bool compareSpecies(const Creature &rhs);
         
     private:
         Species _s;
@@ -59,6 +63,11 @@ class Darwin{
         std::vector<Creature> _creatures;
         std::vector<int> _grid;
         std::unordered_map<int, int> _positions;
+        std::pair<front_t, int> front(int pos, dir_t dir);
+        std::pair<int, int> front_coordinate(int pos, dir_t dir);
+        std::pair<int, int> new_position(int pos, dir_t dir);
+        bool in_bounds(std::pair<int, int> coord);
+        int coordToPosition(std::pair<int, int> coord);
 };
 
 

@@ -15,6 +15,8 @@
 
 Species::Species(std::string n):_name(n){}
 
+Species::Species(){}
+
 void Species::addInstruction(std::string in){
     instruction instruction;
 
@@ -50,6 +52,9 @@ void Species::addInstruction(std::string in){
     _instructions.push_back(instruction);
 }
 
+bool Species::operator==( const Species &rhs){
+    return (*this)._name == rhs._name;
+}
 
 inst_t Species::executeControls(int& pc, front_t front){
     
@@ -107,6 +112,9 @@ inst_t Species::executeControls(int& pc, front_t front){
 //----------
 
 //Creature Constructor
+
+Creature::Creature(){}
+
 Creature::Creature(Species s, std::string dir)
     : _s(s), _pc(0) {
 
@@ -164,14 +172,20 @@ bool Creature::execute(front_t front, Creature& other) {
     return instruction == HOP;
 }
 
+bool Creature::compareSpecies(const Creature &rhs){
+
+return (*this)._s == rhs._s;
+
+}
+
 //--------
 // Darwin
 //--------
 
 Darwin::Darwin(int w, int h, int t): _height(h), _width(w), _size(w*h), _turns(t), _grid(_size) {}
 
-void Darwin::addCreature(Creature s, int r, int c){
-    int position = r + c * _width;
+void Darwin::addCreature(Creature s, int c, int r){
+    int position = c + r * _width;
     _creatures.push_back(s);
     int id = _creatures.size() - 1;
     _grid[position] = id;
@@ -187,15 +201,92 @@ void Darwin::simulate(){
             int id = b->first;
             int pos = b->second;
             Creature c = _creatures[id];
-            dir_t d = c.getDirection();
-            // determine whats around creature based on direction and grid + pos
-            // Execute the turn with c.execute()
+            dir_t dir = c.getDirection();
+            std::pair<front_t, int> x = front(pos, dir);
+
+            Creature other;
+
+            if(x.second > -1 && x.second < (int) _creatures.size())
+                other = _creatures[x.second];
+            else
+                other = c;
+            bool hopped = c.execute(x.first, other);
+
             // Potentially update pos (b->second) and use that to update grid
+            if (hopped) {
+                std::pair<int, int> fc = front_coordinate(pos, dir);
+                
+                int new_pos = coordToPosition(fc);
+
+                _positions[id] = new_pos;
+                _grid[pos] = -1;
+                _grid[new_pos] = id;
+            }
             ++b;
         }
         --_turns;
     }
 }
+
+std::pair<int, int> Darwin::front_coordinate(int pos, dir_t dir) {
+    int row = pos/_width;
+    int col = pos - (row * _width);
+    int row2;
+    int col2;
+    switch(dir) {
+        case NORTH:
+            row2 = row - 1;
+            col2 = col;
+            break;
+        case EAST:
+            row2 = row;
+            col2 = col + 1;
+            break;
+        case SOUTH:
+            row2 = row + 1;
+            col2 = col;
+            break;
+        case WEST:
+            row2 = row;
+            col2 = col - 1;
+            break;
+    }
+    return std::pair<int, int>(row2, col2);
+}
+
+bool Darwin::in_bounds(std::pair<int, int> coord) {
+    int row = coord.first;
+    int col = coord.second;
+    return row < 0 || row >= _height || col < 0 || col >= _width;
+}
+
+int Darwin::coordToPosition(std::pair<int, int> coord) {
+    return coord.second + coord.first * _width;
+}
+
+std::pair<front_t, int> Darwin::front(int pos, dir_t dir) {
+    
+    std::pair<int, int> fc = front_coordinate(pos, dir);
+
+    if(in_bounds(fc)) {
+        return std::pair<front_t, int>(WALL, -1);
+    }
+
+    int front_pos = coordToPosition(fc);
+
+    assert(front_pos < (int) _grid.size());
+    int id = _grid[front_pos];
+
+    if (id == -1) {
+        return std::pair<front_t, int>(EMPTY, -1);
+    }
+    else {
+        bool status = _creatures[pos].compareSpecies(_creatures[front_pos]);
+        return status ? std::pair<front_t, int>(FRIEND, -1) : std::pair<front_t, int>(ENEMY, id);
+    }
+    
+}
+
 
 // index = X + Y * Width;
 // Y = (int)(index / Width)
