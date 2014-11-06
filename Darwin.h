@@ -24,7 +24,7 @@ class Species{
         inst_t executeControls(int& pc, front_t front);
         Species(std::string n);
         bool operator==(const Species &rhs);
-
+        const std::string getName() const;
     private:
         std::vector<instruction> _instructions;
         std::string _name;          //Name of species  
@@ -38,7 +38,8 @@ class Creature{
         dir_t getDirection();
         bool execute(front_t front, Creature& other);
         bool compareSpecies(const Creature &rhs);
-        
+        const std::string getSpeciesName() const;
+
     private:
         Species _s;
         dir_t _dir;

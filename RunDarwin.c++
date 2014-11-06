@@ -22,10 +22,41 @@
 int main () {
     using namespace std;
 
-    Darwin board(10, 10, 10);
+       Darwin board(8, 8, 5);
+    Species food("food");
+    food.addInstruction("left");
+    food.addInstruction("go 0");
+    
+    Species hopper("hopper");
+    hopper.addInstruction("hop");
+    hopper.addInstruction("go 0");
+
+    Species test("test");
+    test.addInstruction("hop");
+    test.addInstruction("if_wall 2");
+    test.addInstruction("left");
+    test.addInstruction("go 0");
+    // Creature c(test, "east");
+
+    Creature f1(food, "east");
+    Creature h1(hopper, "north");
+    Creature h2(hopper, "east");
+    Creature h3(hopper, "south");
+    Creature h4(hopper, "west");
+    Creature f2(food, "north");
+
+
+    board.addCreature(f1, 0, 0);
+    board.addCreature(h1, 3, 3);
+    board.addCreature(h2, 3, 4);
+    board.addCreature(h3, 4, 4);
+    board.addCreature(h4, 4, 3);
+    board.addCreature(f2, 7, 7);
+
     board.printGrid();
-    Darwin board2(101, 101, 10);
-    board2.printGrid();
+    // board.simulate();
+    
+
     // ----
     // food
     // ----

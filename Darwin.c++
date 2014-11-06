@@ -20,6 +20,9 @@ Species::Species(std::string n):_name(n){}
 
 Species::Species(){}
 
+const std::string Species::getName() const{
+    return _name;
+}
 void Species::addInstruction(std::string in){
     instruction instruction;
 
@@ -141,6 +144,10 @@ Creature::Creature(Species s, std::string dir)
     }
 }
 
+const std::string Creature::getSpeciesName() const{
+    return _s.getName();
+}
+
 //------------------
 // Creature Actions
 //------------------
@@ -195,7 +202,7 @@ return (*this)._s == rhs._s;
 // Darwin
 //--------
 
-Darwin::Darwin(int w, int h, int t): _height(h), _width(w), _size(w*h), _turns(t), _grid(_size) {}
+Darwin::Darwin(int w, int h, int t): _height(h), _width(w), _size(w*h), _turns(t), _grid(_size, -1) {}
 
 void Darwin::addCreature(Creature s, int c, int r){
     int position = c + r * _width;
@@ -206,6 +213,7 @@ void Darwin::addCreature(Creature s, int c, int r){
 }
 
 void Darwin::simulate(){
+    printGrid();
     while (_turns > 0) {
         std::unordered_map<int,int>::iterator b = _positions.begin();
         std::unordered_map<int,int>::iterator e = _positions.end();
@@ -237,6 +245,7 @@ void Darwin::simulate(){
             }
             ++b;
         }
+        printGrid();
         --_turns;
     }
 }
@@ -307,24 +316,27 @@ std::pair<front_t, int> Darwin::front(int pos, dir_t dir) {
 
 
 void Darwin::printGrid(){
-    std::cout << std::setw(4) << " ";
+    std::cout << "  ";
     for(int i = 0; i < _width; ++i)
-        std::cout << std::setw(4) << i;
+        std::cout << i % 10;
     std::cout << std::endl;
-
    int i = 0;
    while(i < _size){
-        std::cout << std::setw(4) << i/_width;
-        for(int j = 0; j < _width; ++j){
+        std::cout << (i/_width) % 10<< " ";
 
-            int y = (int) (j/_width);
-            int x = j - (y - _width); 
-
-            std::cout << std::setw(4) << ".";
+        for(int grid_in = 0; grid_in < _width; ++grid_in){
+            // std::cout << std::setw(4) << grid_in << " test";
+            auto getCreatureFromMap = _positions.find(_grid[grid_in + i]);
+           
+            if( getCreatureFromMap != _positions.end()){
+                std::cout << _creatures[getCreatureFromMap->first].getSpeciesName().substr(0,1);
+            }else{
+                std::cout << ".";
+            }
         }
-        std::cout << std::endl;
 
-        i+=_width;
+        std::cout << std::endl;
+        i += _width;
     }
 
     std::cout << std::endl;
