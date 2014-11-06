@@ -27,7 +27,7 @@ void Species::addInstruction(std::string in){
     if(space > 0){
         instruction._n = atoi(in.substr(space+1, in.length()).c_str());
         in = in.substr(0, space);
-    }else
+    }else{
         if(DEBUGSC) std::cout << "Adding control instructions " << std::endl;
         instruction._n = -1;
     }
