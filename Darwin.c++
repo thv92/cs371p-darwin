@@ -9,8 +9,8 @@
 #include <string>
 #include <unordered_map>
 
-#define DEBUGSC true
-#define DEBUGD true
+#define DEBUGSC false
+#define DEBUGD false
 
 //---------
 // Species
@@ -60,6 +60,8 @@ void Species::addInstruction(std::string in){
 }
 
 bool Species::operator==( const Species &rhs){
+    // std::cout << " compare in species " << (*this)._name <<  std::endl;
+
     return (*this)._name == rhs._name;
 }
 
@@ -145,6 +147,7 @@ Creature::Creature(Species s, std::string dir)
 }
 
 const std::string Creature::getSpeciesName() const{
+
     return _s.getName();
 }
 
@@ -193,8 +196,8 @@ bool Creature::execute(front_t front, Creature& other) {
 }
 
 bool Creature::compareSpecies(const Creature &rhs){
-
-return (*this)._s == rhs._s;
+    // std::cout << " Creature compare species" << std::endl;
+    return (*this)._s == rhs._s;
 
 }
 
@@ -202,7 +205,7 @@ return (*this)._s == rhs._s;
 // Darwin
 //--------
 
-Darwin::Darwin(int w, int h, int t): _height(h), _width(w), _size(w*h), _turns(t), _grid(_size, -1) {}
+Darwin::Darwin(int h, int w, int t): _height(h), _width(w), _size(w*h), _turns(t), _grid(_size, -1) {}
 
 void Darwin::addCreature(Creature s, int c, int r){
     int position = c + r * _width;
@@ -210,6 +213,9 @@ void Darwin::addCreature(Creature s, int c, int r){
     int id = _creatures.size() - 1;
     _grid[position] = id;
     _positions.insert(std::pair<int, int>(id, position));
+
+
+
 }
 
 void Darwin::simulate(){
@@ -221,10 +227,11 @@ void Darwin::simulate(){
         while (b != e) {
             int id = b->first;
             int pos = b->second;
+
             Creature *c = &_creatures[id];
             dir_t dir = c->getDirection();
 
-            if(DEBUGD) std::cout << " Creature Direction: " << dir;
+            if(DEBUGD) std::cout << " Creature Direction: " << dir << " " << c->getSpeciesName()<< std::endl;
 
             std::pair<front_t, int> x = front(pos, dir);
 
@@ -234,6 +241,7 @@ void Darwin::simulate(){
                 other = &_creatures[x.second];
             else
                 other = c;
+
             bool hopped = c->execute(x.first, *other);
 
             // Potentially update pos (b->second) and use that to update grid
@@ -241,7 +249,7 @@ void Darwin::simulate(){
                 std::pair<int, int> fc = front_coordinate(pos, dir);
                 
                 int new_pos = coordToPosition(fc);
-                if(!in_bounds(fc)){
+                if(!in_bounds(fc) && x.first == EMPTY){
                     _positions[id] = new_pos;
                     _grid[pos] = -1;
                     _grid[new_pos] = id;
@@ -291,7 +299,6 @@ int Darwin::coordToPosition(std::pair<int, int> coord) {
 }
 
 std::pair<front_t, int> Darwin::front(int pos, dir_t dir) {
-    if(DEBUGD) std::cout << " Inside front function " << std::endl;
     std::pair<int, int> fc = front_coordinate(pos, dir);
 
     if(in_bounds(fc)) {
@@ -302,12 +309,15 @@ std::pair<front_t, int> Darwin::front(int pos, dir_t dir) {
 
     assert(front_pos < (int) _grid.size());
     int id = _grid[front_pos];
-
+    if(DEBUGD) std::cout << " Inside front function " <<  fc.first << " " << fc.second<< std::endl;
+    if(DEBUGD) std::cout << " Inside front function " <<  pos << " " << front_pos << std::endl;
+    
     if (id == -1) {
         return std::pair<front_t, int>(EMPTY, -1);
     }
     else {
-        bool status = _creatures[pos].compareSpecies(_creatures[front_pos]);
+        bool status = _creatures[_grid[pos]].compareSpecies(_creatures[id]);
+        if(DEBUGD) std::cout << "status: " << status <<std::endl;
         return status ? std::pair<front_t, int>(FRIEND, -1) : std::pair<front_t, int>(ENEMY, id);
     }
     
@@ -326,8 +336,7 @@ void Darwin::printGrid(){
     std::cout << std::endl;
    int i = 0;
    while(i < _size){
-        std::cout << (i/_width) % 10<< " ";
-
+        std::cout << (i/_height) % 10<< " ";
         for(int grid_in = 0; grid_in < _width; ++grid_in){
             auto getCreatureFromMap = _positions.find(_grid[grid_in + i]);
             if( getCreatureFromMap != _positions.end()){
