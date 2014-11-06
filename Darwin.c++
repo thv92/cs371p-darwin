@@ -318,8 +318,14 @@ std::pair<front_t, int> Darwin::front(int pos, dir_t dir) {
 
 void Darwin::printGrid(){
 
-   int i = 0;
-   while(i < _size){
+	std::cout << "  ";
+	for(int i = 0; i < _width; ++i)
+	std::cout << i % 10;
+	std::cout << std::endl;
+
+    int i = 0;
+    while(i < _size){
+    	std::cout << (i/_height) % 10<< " ";
         for(int col = 0; col < _width; ++col){
         	int id = _grid[i];
         	if(id != -1) {
