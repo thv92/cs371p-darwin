@@ -9,6 +9,9 @@
 #include <string>
 #include <unordered_map>
 
+#define DEBUGSC false
+#define DEBUGD true
+
 //---------
 // Species
 //---------
@@ -21,21 +24,22 @@ void Species::addInstruction(std::string in){
     instruction instruction;
 
     int space = in.find_first_of(' ');
-    instruction._n = atoi(in.substr(space+1, in.length()).c_str());
-    in = in.substr(0, space);
+    if(space > 0){
+        instruction._n = atoi(in.substr(space+1, in.length()).c_str());
+        in = in.substr(0, space);
+    }else
+        if(DEBUGSC) std::cout << "Adding control instructions " << std::endl;
+        instruction._n = -1;
+    }
 
     if(in == "hop"){
         instruction._i = HOP;
-        instruction._n = -1;
     }else if(in == "left"){
         instruction._i = LEFT;
-        instruction._n = -1;
     }else if(in == "right"){
         instruction._i = RIGHT;
-        instruction._n = -1;
     }else if(in == "infect"){
         instruction._i = INFECT;
-        instruction._n = -1;
     }else if(in == "go"){
         instruction._i = GO;
     }else if(in == "if_empty"){
