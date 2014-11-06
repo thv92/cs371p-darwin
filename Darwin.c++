@@ -207,15 +207,12 @@ bool Creature::compareSpecies(const Creature &rhs){
 
 Darwin::Darwin(int h, int w, int t): _height(h), _width(w), _size(w*h), _turns(t), _grid(_size, -1) {}
 
-void Darwin::addCreature(Creature s, int c, int r){
+void Darwin::addCreature(Creature s, int r, int c){
     int position = c + r * _width;
     _creatures.push_back(s);
     int id = _creatures.size() - 1;
     _grid[position] = id;
     _positions.insert(std::pair<int, int>(id, position));
-
-
-
 }
 
 void Darwin::simulate(){
@@ -244,11 +241,11 @@ void Darwin::simulate(){
 
             bool hopped = c->execute(x.first, *other);
 
-            // Potentially update pos (b->second) and use that to update grid
             if (hopped) {
                 std::pair<int, int> fc = front_coordinate(pos, dir);
                 
                 int new_pos = coordToPosition(fc);
+
                 if(!in_bounds(fc) && x.first == EMPTY){
                     _positions[id] = new_pos;
                     _grid[pos] = -1;
@@ -265,27 +262,23 @@ void Darwin::simulate(){
 std::pair<int, int> Darwin::front_coordinate(int pos, dir_t dir) {
     int row = pos/_width;
     int col = pos - (row * _width);
-    int row2;
-    int col2;
+    int f_row = row;
+    int f_col = col;
     switch(dir) {
         case NORTH:
-            row2 = row - 1;
-            col2 = col;
+            f_row = row - 1;
             break;
         case EAST:
-            row2 = row;
-            col2 = col + 1;
+            f_col = col + 1;
             break;
         case SOUTH:
-            row2 = row + 1;
-            col2 = col;
+            f_row = row + 1;
             break;
         case WEST:
-            row2 = row;
-            col2 = col - 1;
+            f_col = col - 1;
             break;
     }
-    return std::pair<int, int>(row2, col2);
+    return std::pair<int, int>(f_row, f_col);
 }
 
 bool Darwin::in_bounds(std::pair<int, int> coord) {
@@ -323,32 +316,21 @@ std::pair<front_t, int> Darwin::front(int pos, dir_t dir) {
     
 }
 
-
-// index = X + Y * Width;
-// Y = (int)(index / Width)
-// X = index - (Y * Width)
-
-
 void Darwin::printGrid(){
-    std::cout << "  ";
-    for(int i = 0; i < _width; ++i)
-        std::cout << i % 10;
-    std::cout << std::endl;
+
    int i = 0;
    while(i < _size){
-        std::cout << (i/_height) % 10<< " ";
-        for(int grid_in = 0; grid_in < _width; ++grid_in){
-            auto getCreatureFromMap = _positions.find(_grid[grid_in + i]);
-            if( getCreatureFromMap != _positions.end()){
-                std::cout << _creatures[getCreatureFromMap->first].getSpeciesName().substr(0,1);
+        for(int col = 0; col < _width; ++col){
+        	int id = _grid[i];
+        	if(id != -1) {
+	            std::unordered_map<int, int>::iterator getCreatureFromMap = _positions.find(_grid[i]);
+	            std::cout << _creatures[getCreatureFromMap->first].getSpeciesName().substr(0,1);
             }else{
                 std::cout << ".";
             }
+            ++i;
         }
-
         std::cout << std::endl;
-        i += _width;
     }
-
     std::cout << std::endl;
 }
