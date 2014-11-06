@@ -11,7 +11,7 @@
 #include <algorithm>
 
 #define DEBUGSC false
-#define DEBUGD true
+#define DEBUGD false
 
 //---------
 // Species
@@ -207,7 +207,8 @@ bool Creature::compareSpecies(const Creature &rhs){
 // Darwin
 //--------
 
-Darwin::Darwin(int h, int w, int t): _height(h), _width(w), _size(w*h), _turns(t), _grid(_size, -1) {}
+Darwin::Darwin(int h, int w, int t): 
+_height(h), _width(w), _size(w*h), _turns(t), _turns_gone(0), _grid(_size, -1){}
 
 void Darwin::addCreature(Creature s, int r, int c){
     int position = c + r * _width;
@@ -239,8 +240,7 @@ void Darwin::orderCreatureTurn(){
 
 void Darwin::simulate(){
 
-
-    while(_turns > 0){
+    while(_turns >= 0){
         printGrid();
         orderCreatureTurn();
         for(int i = 0; i < (int) _creaturesOnGrid.size(); ++i){
@@ -255,12 +255,11 @@ void Darwin::simulate(){
             Creature &c = info.c;
             dir_t dir = c.getDirection();
 
-            if(DEBUGD) std::cout << " dir: " << dir << std::endl;
-
+            // if(DEBUGD) std::cout << " dir: " << dir << std::endl;
             std::pair<front_t, int> whatsInFront = front(pos, dir);
             
             Creature *other;
-
+            if(DEBUGD) std::cout << " front id: " << whatsInFront.second << std::endl;
             if(whatsInFront.second > -1)
                 other = &_creatureInfo.at(whatsInFront.second).c;
             else
@@ -273,13 +272,13 @@ void Darwin::simulate(){
                 int new_pos = coordToPosition(fc);
 
                 if(!in_bounds(fc) && whatsInFront.first == EMPTY){
-                    _creatureInfo.at(whatsInFront.second).pos = new_pos;
+                    _creatureInfo.at(id).pos = new_pos;
                     _grid[pos] = -1;
                     _grid[new_pos] = id;
                 }
             }
         }
-
+        ++_turns_gone;
         --_turns;
     }
 
@@ -330,8 +329,8 @@ std::pair<front_t, int> Darwin::front(int pos, dir_t dir) {
 
     assert(front_pos < (int) _grid.size());
     int idInFront = _grid[front_pos];
-    if(DEBUGD) std::cout << " Inside front function " <<  fc.first << " " << fc.second<< std::endl;
-    if(DEBUGD) std::cout << " Inside front function " <<  pos << " " << front_pos << std::endl;
+    if(DEBUGD) std::cout << " Front coordiante row, col " <<  fc.first << " " << fc.second<< std::endl;
+    if(DEBUGD) std::cout << " Front position" <<  pos << " " << front_pos << std::endl;
     
     if (idInFront == -1) {
         return std::pair<front_t, int>(EMPTY, -1);
@@ -345,7 +344,7 @@ std::pair<front_t, int> Darwin::front(int pos, dir_t dir) {
 }
 
 void Darwin::printGrid(){
-
+    std::cout << "Turn = " << _turns_gone << "." << std::endl;
 	std::cout << "  ";
 	for(int i = 0; i < _width; ++i)
 	std::cout << i % 10;

@@ -67,6 +67,7 @@ class Darwin{
         const int _width;
         const int _size;
         int _turns;
+        int _turns_gone;
 
         // std::vector<Creature> _creatures;
         std::vector<int> _grid;
