@@ -47,15 +47,14 @@ int main () {
 
 
     board.addCreature(f1, 0, 0);
-    board.addCreature(h1, 3, 3);
-    board.addCreature(h2, 3, 4);
-    board.addCreature(h3, 4, 4);
-    board.addCreature(h4, 4, 3);
-    board.addCreature(f2, 7, 7);
+    // board.addCreature(h1, 3, 3);
+    // board.addCreature(h2, 3, 4);
+    // board.addCreature(h3, 4, 4);
+    // board.addCreature(h4, 4, 3);
+    // board.addCreature(f2, 7, 7);
 
-    board.printGrid();
-    // board.simulate();
-    
+    board.simulate();
+
 
     // ----
     // food

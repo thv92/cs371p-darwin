@@ -9,7 +9,7 @@
 #include <string>
 #include <unordered_map>
 
-#define DEBUGSC false
+#define DEBUGSC true
 #define DEBUGD true
 
 //---------
@@ -221,17 +221,20 @@ void Darwin::simulate(){
         while (b != e) {
             int id = b->first;
             int pos = b->second;
-            Creature c = _creatures[id];
-            dir_t dir = c.getDirection();
+            Creature *c = &_creatures[id];
+            dir_t dir = c->getDirection();
+
+            if(DEBUGD) std::cout << " Creature Direction: " << dir;
+
             std::pair<front_t, int> x = front(pos, dir);
 
-            Creature other;
+            Creature *other;
 
             if(x.second > -1 && x.second < (int) _creatures.size())
-                other = _creatures[x.second];
+                other = &_creatures[x.second];
             else
                 other = c;
-            bool hopped = c.execute(x.first, other);
+            bool hopped = c->execute(x.first, *other);
 
             // Potentially update pos (b->second) and use that to update grid
             if (hopped) {
@@ -287,7 +290,7 @@ int Darwin::coordToPosition(std::pair<int, int> coord) {
 }
 
 std::pair<front_t, int> Darwin::front(int pos, dir_t dir) {
-    
+    if(DEBUGD) std::cout << " Inside front function " << std::endl;
     std::pair<int, int> fc = front_coordinate(pos, dir);
 
     if(in_bounds(fc)) {
@@ -325,9 +328,7 @@ void Darwin::printGrid(){
         std::cout << (i/_width) % 10<< " ";
 
         for(int grid_in = 0; grid_in < _width; ++grid_in){
-            // std::cout << std::setw(4) << grid_in << " test";
             auto getCreatureFromMap = _positions.find(_grid[grid_in + i]);
-           
             if( getCreatureFromMap != _positions.end()){
                 std::cout << _creatures[getCreatureFromMap->first].getSpeciesName().substr(0,1);
             }else{
