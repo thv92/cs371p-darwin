@@ -34,7 +34,7 @@ class Creature{
 
     public:
         Creature();
-        Creature(Species s, std::string dir);
+        Creature(Species s, int dir);
         dir_t getDirection();
         bool execute(front_t front, Creature& other);
         bool compareSpecies(const Creature &rhs);

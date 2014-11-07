@@ -115,12 +115,12 @@ int main () {
     Print every grid.
     */
     Darwin board1(8, 8, 5);
-    Creature b1_f1(food, "east");
-    Creature b1_h1(hopper, "north");
-    Creature b1_h2(hopper, "east");
-    Creature b1_h3(hopper, "south");
-    Creature b1_h4(hopper, "west");
-    Creature b1_f2(food, "north");
+    Creature b1_f1(food, 1);
+    Creature b1_h1(hopper, 0);
+    Creature b1_h2(hopper, 1);
+    Creature b1_h3(hopper, 2);
+    Creature b1_h4(hopper, 3);
+    Creature b1_f2(food, 0);
 
     board1.addCreature(b1_f1, 0, 0);
     board1.addCreature(b1_h1, 3, 3);
@@ -149,10 +149,10 @@ int main () {
     */
     Darwin board2(7, 9, 5);
 
-    Creature t1(trap, "south");
-    Creature h1(hopper, "east");
-    Creature r1(rover, "north");
-    Creature t2(trap, "west");
+    Creature t1(trap, 2);
+    Creature h1(hopper, 1);
+    Creature r1(rover, 0);
+    Creature t2(trap, 3);
 
     board2.addCreature(t1, 0, 0);
     board2.addCreature(h1, 3, 2);
@@ -184,6 +184,31 @@ int main () {
     Print the first 10 grids          (i.e. 0, 1, 2...9).
     Print every 100th grid after that (i.e. 100, 200, 300...1000).
     */
+
+    Darwin board3(72, 72, 1000);
+    std::vector<Creature> storeCreatures;
+    
+    for(int i = 0; i < 10; ++i){
+        Creature k(food, rand()%4);
+        storeCreatures.push_back(k);
+    }
+    for(int i = 0; i < 10; ++i){
+        Creature k(hopper, rand()%4);
+        storeCreatures.push_back(k);
+    }
+    for(int i = 0; i < 10; ++i){
+        Creature k(rover, rand()%4);
+        storeCreatures.push_back(k);
+    }
+    for(int i = 0; i < 10; ++i){
+        Creature k(trap, rand()%4);
+        storeCreatures.push_back(k);
+    }
+
+    for(int i = 0; i < (int) storeCreatures.size(); ++i){
+        board3.addCreature(storeCreatures[i], rand()%5184, rand()%5184);
+    }
+
 
     // ------------
     // darwin 72x72

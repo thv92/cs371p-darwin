@@ -130,17 +130,17 @@ inst_t Species::executeControls(int& pc, front_t front){
 
 Creature::Creature(){}
 
-Creature::Creature(Species s, std::string dir)
+Creature::Creature(Species s, int dir)
     : _s(s), _pc(0) {
 
     //Set direction of the creature
-    if(dir == "north"){
+    if(dir == 0){
       _dir = NORTH;
-    }else if(dir == "south"){
+    }else if(dir == 2){
       _dir = SOUTH;
-    }else if(dir == "east"){
+    }else if(dir == 1){
       _dir = EAST;
-    }else if(dir == "west"){
+    }else if(dir == 3){
       _dir = WEST;
     }else{
       throw std::invalid_argument("Invalid direction.");
@@ -350,18 +350,17 @@ void Darwin::printGrid(){
 	std::cout << i % 10;
 	std::cout << std::endl;
 
+
     int i = 0;
     while(i < _size){
-    	std::cout << (i/_height) % 10<< " ";
+    	std::cout << (i/_width) % 10 << " ";
+
         for(int col = 0; col < _width; ++col){
         	int id = _grid[i];
         	
             if(id != -1) {
 	            std::unordered_map<int, creatureInfo>::iterator getCreatureFromMap = _creatureInfo.find(_grid[i]);
-	            
-                if(getCreatureFromMap != _creatureInfo.end()){
-                    std::cout << getCreatureFromMap->second.c.getSpeciesName().substr(0,1);
-                }
+                std::cout << getCreatureFromMap->second.c.getSpeciesName().substr(0,1);
             }else{
                 std::cout << ".";
             }
