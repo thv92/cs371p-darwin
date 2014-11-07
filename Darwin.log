@@ -1,0 +1,191 @@
+commit e9c9d11bc4dc65a1d6048672ff5f030939d0dbd6
+Author: Timothy Sherlock <tsherloc@cs.utexas.edu>
+Date:   Thu Nov 6 21:40:24 2014 -0600
+
+    doxy and uml an
+
+commit 884bbbdc2296738cbd48fed6e76013adc66d90dd
+Author: Thien Vo <vohuythien@utexas.edu>
+Date:   Thu Nov 6 21:32:30 2014 -0600
+
+    Best is done
+
+commit 5a2fd599c5fc2b8d589495c6b3689b35d207ca39
+Author: Thien Vo <vohuythien@utexas.edu>
+Date:   Thu Nov 6 21:27:46 2014 -0600
+
+    Unit tests are done Fixes #18, Fixes #6, Fixes #7, Fixes #20, Fixes #3
+
+commit 400a49abe4f71d7b6ce019bf1203b9d0812f3567
+Author: Thien Vo <vohuythien@utexas.edu>
+Date:   Thu Nov 6 21:11:57 2014 -0600
+
+    Added skeleton for best test
+
+commit d8a4d3fdd9e57d4aec27f9eaaa9ffdf25b3bc718
+Author: Thien Vo <vohuythien@utexas.edu>
+Date:   Thu Nov 6 21:10:10 2014 -0600
+
+    took off some test files
+
+commit 53dd0b5ff76cdfd61d75e63a8b14b04535233639
+Author: Thien Vo <vohuythien@utexas.edu>
+Date:   Thu Nov 6 21:07:38 2014 -0600
+
+    added documentation and comments
+
+commit 8c26e77dc63350c5189046b0e5051c901de33b96
+Author: Thien Vo <vohuythien@utexas.edu>
+Date:   Thu Nov 6 19:50:36 2014 -0600
+
+    72x72 is not right
+
+commit 5166eaeb010016ab6b28a71cd6eddaadb7c10cde
+Author: Thien Vo <vohuythien@utexas.edu>
+Date:   Thu Nov 6 19:24:47 2014 -0600
+
+    72 x72 should work
+
+commit ab31c52a7bf0e558f7e13576c85bfe2badb83799
+Author: Thien Vo <vohuythien@utexas.edu>
+Date:   Thu Nov 6 18:55:16 2014 -0600
+
+    Changed Creature constructor to accept int for dir
+
+commit 3c9fe841680e9e24beb0da4c03e8a2ebbb5dfd07
+Author: Thien Vo <vohuythien@utexas.edu>
+Date:   Thu Nov 6 18:20:46 2014 -0600
+
+    Added stuff to Rundarwin
+
+commit dd0d6e6db7c274bb99f97a574238e5a1607eedc4
+Author: Timothy Sherlock <tsherloc@cs.utexas.edu>
+Date:   Thu Nov 6 17:58:08 2014 -0600
+
+    working simulate
+
+commit 9825fb9f0955d496cc1f73e25fb0d57f980ef54b
+Author: Timothy Sherlock <tsherloc@cs.utexas.edu>
+Date:   Thu Nov 6 17:44:58 2014 -0600
+
+    Added Test File
+
+commit fa170106cdd6373228623f41f06549c9d980bdaa
+Author: Thien Vo <vohuythien@utexas.edu>
+Date:   Thu Nov 6 17:44:25 2014 -0600
+
+    Changed simulate, added 2 containers
+
+commit ae50594b88f61f61db3a668ac2c578cc58e00337
+Author: Timothy Sherlock <tsherloc@cs.utexas.edu>
+Date:   Thu Nov 6 15:43:26 2014 -0600
+
+    for thien
+
+commit 49b56ce49a62146d37b5c33125cc5bd502086f2a
+Author: Timothy Sherlock <tsherloc@cs.utexas.edu>
+Date:   Thu Nov 6 14:05:02 2014 -0600
+
+    fixed print
+
+commit d84b5bf5510b843fab450578f7c3bad60e10f617
+Author: Thien Vo <vohuythien@utexas.edu>
+Date:   Thu Nov 6 13:08:53 2014 -0600
+
+     problems with 7x9
+
+commit 3d005409aadff2d07722ce4b48c4d1134890ed08
+Author: Thien Vo <vohuythien@utexas.edu>
+Date:   Thu Nov 6 11:40:56 2014 -0600
+
+    Changed simulate so that when hop and hits wall, would check for bounds, otherwise segfaults
+
+commit a0eaae65da9b82b090dfecef5fdc60dc287c7e5a
+Author: Thien Vo <vohuythien@utexas.edu>
+Date:   Thu Nov 6 11:34:55 2014 -0600
+
+    Changed in simulate Creature c to Creature *c and same for other
+
+commit 6fc53eb7696a04e1b348354a69f82f6ce1091f80
+Author: Thien Vo <vohuythien@utexas.edu>
+Date:   Thu Nov 6 11:25:40 2014 -0600
+
+    Changed vector initialization to init to -1, print should be right Fixes #13
+
+commit bd852f74b934387abd2eda89756ec31653266c3c
+Author: Thien Vo <vohuythien@utexas.edu>
+Date:   Thu Nov 6 11:16:57 2014 -0600
+
+    Fixes #19, fixed else problem, compiles up till now
+
+commit 7be86c979732b8e81bdf286dbdfbe187fe001d69
+Author: Thien Vo <vohuythien@utexas.edu>
+Date:   Thu Nov 6 11:15:43 2014 -0600
+
+    Changed LEFT, Added debug statements for Species and Creature Fixes #17
+
+commit e7aba276f64c64760c3927f32fe4a75580f49a77
+Author: Thien Vo <vohuythien@utexas.edu>
+Date:   Thu Nov 6 11:11:31 2014 -0600
+
+    Changed addInstructions, Fixes #16
+
+commit b4f45cb596f0a39b85a11df4fef0bf73e142ed7e
+Author: Timothy Sherlock <tsherloc@cs.utexas.edu>
+Date:   Wed Nov 5 23:41:36 2014 -0600
+
+    compiling but bug
+
+commit 5fbfd80d99e3869c4b580065c59840c81572701a
+Author: Timothy Sherlock <tsherloc@cs.utexas.edu>
+Date:   Wed Nov 5 20:30:48 2014 -0600
+
+    darwin done conceptually
+
+commit 433e84faddba01c7a8f6e3a83d296b84220986cc
+Author: Timothy Sherlock <tsherloc@cs.utexas.edu>
+Date:   Wed Nov 5 18:57:01 2014 -0600
+
+    finished crature and species maybe
+
+commit aed03696650e9a71bdc379eeb729e130a416a659
+Author: Timothy Sherlock <tsherloc@cs.utexas.edu>
+Date:   Wed Nov 5 15:56:48 2014 -0600
+
+    working on species
+
+commit adfca0dfaa7bfed269c5770bae99e62cb022c138
+Author: Thien Vo <vohuythien@utexas.edu>
+Date:   Wed Nov 5 03:42:10 2014 -0600
+
+    Able to initialize grid with vector, did easy part of printing grid
+
+commit a991b67b5d5dea923636cc7c2fe614fd809cc068
+Author: Thien Vo <vohuythien@utexas.edu>
+Date:   Tue Nov 4 17:31:33 2014 -0600
+
+    Need to finish random for species switch case, added creature constructor
+
+commit 4d88bdbd1225dcc173ee01fc1991f93c148724d0
+Author: Timothy Sherlock <tsherloc@cs.utexas.edu>
+Date:   Tue Nov 4 15:48:42 2014 -0600
+
+    some work
+
+commit 649d202d43613ddaf2f3f3defe29e1fca4a324c4
+Author: Thien Vo <vohuythien@utexas.edu>
+Date:   Mon Nov 3 15:10:18 2014 -0600
+
+    i did stuff
+
+commit 3c7565bef1d853f1a9d97a0820c97eb32c6d16cf
+Author: Thien Vo <vohuythien@utexas.edu>
+Date:   Mon Nov 3 13:18:06 2014 -0600
+
+    Added more skeleton code
+
+commit 3185f47d35f1edf88c52922c9e57eb6a290a6190
+Author: Thien Vo <vohuythien@utexas.edu>
+Date:   Sat Nov 1 00:41:06 2014 -0500
+
+    Skeleton code. Fixes #11, Fixes #2, Fixes #1
