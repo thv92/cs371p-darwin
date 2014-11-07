@@ -243,4 +243,55 @@ int main () {
     Print every 100th grid after that (i.e. 100, 200, 300...1000).
     */
 
+
+    Darwin board4(72, 72, 1000);
+    
+    for(int i = 0; i < 10; ++i){
+        int pos = rand()%5184;
+        int row = pos/72;
+        int col = pos%72;
+        Creature k(food, rand()%4);
+        board4.addCreature(k, row, col);
+    }
+    for(int i = 0; i < 10; ++i){
+        int pos = rand()%5184;
+        int row = pos/72;
+        int col = pos%72;
+        Creature k(hopper, rand()%4);
+        board4.addCreature(k, row, col);
+
+    }
+    for(int i = 0; i < 10; ++i){
+        int pos = rand()%5184;
+        int row = pos/72;
+        int col = pos%72;
+        Creature k(rover, rand()%4);
+        board4.addCreature(k, row, col);
+    }
+    for(int i = 0; i < 10; ++i){
+        int pos = rand()%5184;
+        int row = pos/72;
+        int col = pos%72;
+        Creature k(trap, rand()%4);
+        board4.addCreature(k, row, col);
+    }
+
+    // //Best
+    // for(int i = 0; i < 10; ++i){
+    //     int pos = rand()%5184;
+    //     int row = pos/72;
+    //     int col = pos%72;
+    //     Creature k(best, rand()%4);
+    //     board4.addCreature(k, row, col);
+    // }
+
+    // board4.simulate();
+
+
+
+
+
+
+
+
     return 0;}
