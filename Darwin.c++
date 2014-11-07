@@ -1,4 +1,8 @@
 
+//---------
+//includes
+//---------
+
 #include "Darwin.h"
 #include <iostream>
 #include <stdexcept>
@@ -17,13 +21,18 @@
 // Species
 //---------
 
+
 Species::Species(std::string n):_name(n){}
 
 Species::Species(){}
 
+
+//get name of species
 const std::string Species::getName() const{
     return _name;
 }
+
+//add instructions and store into vector for later execution
 void Species::addInstruction(std::string in){
     instruction instruction;
 
@@ -60,11 +69,12 @@ void Species::addInstruction(std::string in){
     _instructions.push_back(instruction);
 }
 
-bool Species::operator==( const Species &rhs){
-    // std::cout << " compare in species " << (*this)._name <<  std::endl;
 
+//overloaded == operator
+bool Species::operator==( const Species &rhs){
     return (*this)._name == rhs._name;
 }
+
 
 inst_t Species::executeControls(int& pc, front_t front){
     
@@ -99,7 +109,7 @@ inst_t Species::executeControls(int& pc, front_t front){
             case IF_RANDOM:
                 if(DEBUGSC) std::cout <<  "IF_RANDOM" << std::endl;
                 r = rand();
-                if(r % 2 == 0) {
+                if(r % 2 == 1) {
                     pc = instruction._n;
                     instruction = _instructions[pc];
                 } else {
@@ -177,7 +187,7 @@ bool Creature::execute(front_t front, Creature& other) {
             if(DEBUGSC) std::cout <<  " RIGHT " << std::endl;
             d = static_cast<int>(_dir);
             ++d;
-            _dir = static_cast<dir_t>(d % 5);
+            _dir = static_cast<dir_t>(d % 4);
             break;
         case INFECT:
             if(DEBUGSC) std::cout <<  " INFECT " << std::endl;
@@ -198,7 +208,6 @@ bool Creature::execute(front_t front, Creature& other) {
 
 
 bool Creature::compareSpecies(const Creature &rhs){
-    // std::cout << " Creature compare species" << std::endl;
     return (*this)._s == rhs._s;
 
 }
@@ -222,12 +231,8 @@ void Darwin::addCreature(Creature s, int r, int c){
     _creatureInfo.insert(std::pair<int, creatureInfo>(id, toAdd));
 }
 
-// bool Darwin::myCompare(int id1, int id2) {
-//     return _creatureInfo.at(id1).pos < _creatureInfo.at(id2).pos;
-// }
 
 void Darwin::orderCreatureTurn(){
-        // std::sort(_creaturesOnGrid.begin(), _creaturesOnGrid.end(), myCompare);
     std::vector<int> temp;
     for(int i= 0; i < _size; ++i){
         if(_grid[i] > 0){
@@ -253,14 +258,9 @@ void Darwin::simulate(){
             int id = _creaturesOnGrid[i];
             int pos = info.pos;
             
-
-            // if(DEBUGD) std::cout << "Inside of for loop for simulate: " << std::endl;
-            // if(DEBUGD) std::cout << "i: "  << i << " id: " << id << " pos: " << pos << std::endl;           
-            
             Creature &c = info.c;
             dir_t dir = c.getDirection();
 
-            // if(DEBUGD) std::cout << " dir: " << dir << std::endl;
             std::pair<front_t, int> whatsInFront = front(pos, dir);
             
             Creature *other;
@@ -354,7 +354,6 @@ void Darwin::printGrid(){
 	for(int i = 0; i < _width; ++i)
 	std::cout << i % 10;
 	std::cout << std::endl;
-
 
     int i = 0;
     while(i < _size){

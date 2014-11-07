@@ -186,7 +186,6 @@ int main () {
     */
 
     Darwin board3(72, 72, 1000);
-    std::vector<Creature> storeCreatures;
     
     for(int i = 0; i < 10; ++i){
         int pos = rand()%5184;
@@ -216,9 +215,7 @@ int main () {
         int col = pos%72;
         Creature k(trap, rand()%4);
         board3.addCreature(k, row, col);
-
     }
-
     board3.simulate();
 
     // ------------
