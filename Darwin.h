@@ -242,7 +242,7 @@ class Darwin{
          * prints grid with creatures
          */
 
-        void printGrid();
+        void printGrid(std::ostream& w);
 
 
         //----------
@@ -254,18 +254,6 @@ class Darwin{
          */
 
         void simulate();
-
-    private:
-        const int _height;
-        const int _width;
-        const int _size;
-        int _turns;         //total turns
-        int _turns_gone;    //turns that have passed
-
-        std::vector<int> _grid; //Grid filled with creature ids
-        std::unordered_map<int, creatureInfo> _creatureInfo;  //filled with creature id and creature info
-        std::vector<int> _creaturesOnGrid;  //vector of creatures' ids
-
 
         //--------
         // front
@@ -328,6 +316,21 @@ class Darwin{
          */
 
         void orderCreatureTurn();
+
+
+    private:
+        const int _height;
+        const int _width;
+        const int _size;
+        int _turns;         //total turns
+        int _turns_gone;    //turns that have passed
+
+        std::vector<int> _grid; //Grid filled with creature ids
+        std::unordered_map<int, creatureInfo> _creatureInfo;  //filled with creature id and creature info
+        std::vector<int> _creaturesOnGrid;  //vector of creatures' ids
+
+
+       
 };
 
 

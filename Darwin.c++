@@ -248,9 +248,9 @@ void Darwin::simulate(){
 
     while(_turns >= 0){
         if(_turns_gone < 10){
-            printGrid();
+            printGrid(std::cout);
         }else if(_turns_gone % 100 == 0){
-            printGrid();
+            printGrid(std::cout);
         }
 
         orderCreatureTurn();
@@ -349,29 +349,29 @@ std::pair<front_t, int> Darwin::front(int pos, dir_t dir) {
     
 }
 
-void Darwin::printGrid(){
-    std::cout << "Turn = " << _turns_gone << "." << std::endl;
-	std::cout << "  ";
+void Darwin::printGrid(std::ostream& w){
+    w << "Turn = " << _turns_gone << "." << std::endl;
+	w << "  ";
 	for(int i = 0; i < _width; ++i)
-	std::cout << i % 10;
-	std::cout << std::endl;
+	w << i % 10;
+	w << std::endl;
 
     int i = 0;
     while(i < _size){
-    	std::cout << (i/_width) % 10 << " ";
+    	w << (i/_width) % 10 << " ";
 
         for(int col = 0; col < _width; ++col){
         	int id = _grid[i];
         	
             if(id != -1) {
 	            std::unordered_map<int, creatureInfo>::iterator getCreatureFromMap = _creatureInfo.find(_grid[i]);
-                std::cout << getCreatureFromMap->second.c.getSpeciesName().substr(0,1);
+                w << getCreatureFromMap->second.c.getSpeciesName().substr(0,1);
             }else{
-                std::cout << ".";
+                w << ".";
             }
             ++i;
         }
-        std::cout << std::endl;
+        w << std::endl;
     }
-    std::cout << std::endl;
+    w << std::endl;
 }
