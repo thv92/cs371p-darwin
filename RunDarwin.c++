@@ -22,60 +22,6 @@
 int main () {
     using namespace std;
 
-    Species food("food");
-    food.addInstruction("left");
-    food.addInstruction("go 0");
-    
-    Species hopper("hopper");
-    hopper.addInstruction("hop");
-    hopper.addInstruction("go 0");
-
-    Species trap("trap");
-    trap.addInstruction("if_enemy 3");
-    trap.addInstruction("left");
-    trap.addInstruction("go 0");
-    trap.addInstruction("infect");
-    trap.addInstruction("go 0");
-
-    Species rover("rover");
-    rover.addInstruction("if_enemy 9");
-    rover.addInstruction("if_empty 7");
-    rover.addInstruction("if_random 5");
-    rover.addInstruction("left");
-    rover.addInstruction("go 0");
-    rover.addInstruction("right");
-    rover.addInstruction("go 0");
-    rover.addInstruction("hop");
-    rover.addInstruction("go 0");
-    rover.addInstruction("infect");
-    rover.addInstruction("go 0");
-
-
-    Species test("test");
-    test.addInstruction("hop");
-    test.addInstruction("if_wall 2");
-    test.addInstruction("left");
-    test.addInstruction("go 0");
-    // Creature c(test, "west");
-
-    // Creature f1(food, "east");
-    // Creature h1(hopper, "north");
-    // Creature h2(hopper, "east");
-    // Creature h3(hopper, "south");
-    // Creature h4(hopper, "west");
-    // Creature f2(food, "north");
-
-
-    // board.addCreature(f1, 0, 0);
-    // board.addCreature(h1, 3, 3);
-    // board.addCreature(h2, 3, 4);
-    // board.addCreature(h3, 4, 4);
-    // board.addCreature(h4, 4, 3);
-    // board.addCreature(f2, 7, 7);
-    // board.addCreature(c, 0, 0);
-    // board.simulate();
-
-
     // ----
     // food
     // ----
@@ -124,6 +70,34 @@ int main () {
      4: go 0
     */
 
+    Species food("food");
+    food.addInstruction("left");
+    food.addInstruction("go 0");
+    
+    Species hopper("hopper");
+    hopper.addInstruction("hop");
+    hopper.addInstruction("go 0");
+
+    Species trap("trap");
+    trap.addInstruction("if_enemy 3");
+    trap.addInstruction("left");
+    trap.addInstruction("go 0");
+    trap.addInstruction("infect");
+    trap.addInstruction("go 0");
+
+    Species rover("rover");
+    rover.addInstruction("if_enemy 9");
+    rover.addInstruction("if_empty 7");
+    rover.addInstruction("if_random 5");
+    rover.addInstruction("left");
+    rover.addInstruction("go 0");
+    rover.addInstruction("right");
+    rover.addInstruction("go 0");
+    rover.addInstruction("hop");
+    rover.addInstruction("go 0");
+    rover.addInstruction("infect");
+    rover.addInstruction("go 0");
+
     // ----------
     // darwin 8x8
     // ----------
@@ -140,6 +114,23 @@ int main () {
     Simulate 5 moves.
     Print every grid.
     */
+    Darwin board1(8, 8, 5);
+    Creature b1_f1(food, "east");
+    Creature b1_h1(hopper, "north");
+    Creature b1_h2(hopper, "east");
+    Creature b1_h3(hopper, "south");
+    Creature b1_h4(hopper, "west");
+    Creature b1_f2(food, "north");
+
+    board1.addCreature(b1_f1, 0, 0);
+    board1.addCreature(b1_h1, 3, 3);
+    board1.addCreature(b1_h2, 3, 4);
+    board1.addCreature(b1_h3, 4, 4);
+    board1.addCreature(b1_h4, 4, 3);
+    board1.addCreature(b1_f2, 7, 7);
+
+    board1.simulate();
+
 
     // ----------
     // darwin 7x9
