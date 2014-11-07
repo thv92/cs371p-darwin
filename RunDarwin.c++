@@ -115,12 +115,12 @@ int main () {
     Print every grid.
     */
     Darwin board1(8, 8, 5);
-    Creature b1_f1(food, 1);
-    Creature b1_h1(hopper, 0);
-    Creature b1_h2(hopper, 1);
-    Creature b1_h3(hopper, 2);
-    Creature b1_h4(hopper, 3);
-    Creature b1_f2(food, 0);
+    Creature b1_f1(food, 2);
+    Creature b1_h1(hopper, 1);
+    Creature b1_h2(hopper, 2);
+    Creature b1_h3(hopper, 3);
+    Creature b1_h4(hopper, 0);
+    Creature b1_f2(food, 1);
 
     board1.addCreature(b1_f1, 0, 0);
     board1.addCreature(b1_h1, 3, 3);
@@ -149,10 +149,10 @@ int main () {
     */
     Darwin board2(7, 9, 5);
 
-    Creature t1(trap, 2);
-    Creature h1(hopper, 1);
-    Creature r1(rover, 0);
-    Creature t2(trap, 3);
+    Creature t1(trap, 3);
+    Creature h1(hopper, 2);
+    Creature r1(rover, 1);
+    Creature t2(trap, 0);
 
     board2.addCreature(t1, 0, 0);
     board2.addCreature(h1, 3, 2);

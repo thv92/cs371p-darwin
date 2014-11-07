@@ -7,7 +7,7 @@
 #include <unordered_map>
 
 enum inst_t { HOP, LEFT, RIGHT, INFECT, GO, IF_EMPTY, IF_ENEMY, IF_RANDOM, IF_WALL };
-enum dir_t { NORTH, EAST, SOUTH, WEST };
+enum dir_t { WEST, NORTH, EAST, SOUTH};
 enum front_t { EMPTY, ENEMY, WALL, FRIEND};
 
 
@@ -70,7 +70,7 @@ class Darwin{
         int _turns_gone;
 
         // std::vector<Creature> _creatures;
-        std::vector<int> _grid;
+        std::vector<int> _grid; 
         // std::unordered_map<int, int> _positions;
 
         //Thien defined

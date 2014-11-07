@@ -135,13 +135,13 @@ Creature::Creature(Species s, int dir)
 
     //Set direction of the creature
     if(dir == 0){
+      _dir = WEST;
+    }else if(dir == 1){
       _dir = NORTH;
     }else if(dir == 2){
-      _dir = SOUTH;
-    }else if(dir == 1){
       _dir = EAST;
     }else if(dir == 3){
-      _dir = WEST;
+      _dir = SOUTH;
     }else{
       throw std::invalid_argument("Invalid direction.");
     }
@@ -170,8 +170,8 @@ bool Creature::execute(front_t front, Creature& other) {
             if(DEBUGSC) std::cout << " LEFT "  << std::endl;
             d = static_cast<int>(_dir);
             --d;
-            _dir = static_cast<dir_t>(d);
-            _dir = _dir < 0 ? WEST : _dir; 
+            d = d < 0 ? 3 : d;
+            _dir =  static_cast<dir_t>(d);
             break;
         case RIGHT:
             if(DEBUGSC) std::cout <<  " RIGHT " << std::endl;
