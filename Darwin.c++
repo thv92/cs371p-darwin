@@ -241,7 +241,12 @@ void Darwin::orderCreatureTurn(){
 void Darwin::simulate(){
 
     while(_turns >= 0){
-        printGrid();
+        if(_turns_gone < 10){
+            printGrid();
+        }else if(_turns_gone % 100 == 0){
+            printGrid();
+        }
+
         orderCreatureTurn();
         for(int i = 0; i < (int) _creaturesOnGrid.size(); ++i){
             creatureInfo &info = _creatureInfo.at(_creaturesOnGrid[i]);

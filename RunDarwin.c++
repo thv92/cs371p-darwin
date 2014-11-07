@@ -189,26 +189,37 @@ int main () {
     std::vector<Creature> storeCreatures;
     
     for(int i = 0; i < 10; ++i){
+        int pos = rand()%5184;
+        int row = pos/72;
+        int col = pos%72;
         Creature k(food, rand()%4);
-        storeCreatures.push_back(k);
+        board3.addCreature(k, row, col);
     }
     for(int i = 0; i < 10; ++i){
+        int pos = rand()%5184;
+        int row = pos/72;
+        int col = pos%72;
         Creature k(hopper, rand()%4);
-        storeCreatures.push_back(k);
+        board3.addCreature(k, row, col);
+
     }
     for(int i = 0; i < 10; ++i){
+        int pos = rand()%5184;
+        int row = pos/72;
+        int col = pos%72;
         Creature k(rover, rand()%4);
-        storeCreatures.push_back(k);
+        board3.addCreature(k, row, col);
     }
     for(int i = 0; i < 10; ++i){
+        int pos = rand()%5184;
+        int row = pos/72;
+        int col = pos%72;
         Creature k(trap, rand()%4);
-        storeCreatures.push_back(k);
+        board3.addCreature(k, row, col);
+
     }
 
-    for(int i = 0; i < (int) storeCreatures.size(); ++i){
-        board3.addCreature(storeCreatures[i], rand()%5184, rand()%5184);
-    }
-
+    board3.simulate();
 
     // ------------
     // darwin 72x72
