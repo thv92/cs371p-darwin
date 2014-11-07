@@ -136,7 +136,6 @@ inst_t Species::executeControls(int& pc, front_t front){
 // Creature
 //----------
 
-//Creature Constructor
 
 Creature::Creature(){}
 
@@ -165,6 +164,7 @@ const std::string Creature::getSpeciesName() const{
 //------------------
 // Creature Actions
 //------------------
+
 dir_t Creature::getDirection() {
     return _dir;
 }
@@ -211,6 +211,7 @@ bool Creature::compareSpecies(const Creature &rhs){
     return (*this)._s == rhs._s;
 
 }
+
 
 //--------
 // Darwin
