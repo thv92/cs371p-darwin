@@ -242,7 +242,18 @@ int main () {
     Print the first 10 grids          (i.e. 0, 1, 2...9).
     Print every 100th grid after that (i.e. 100, 200, 300...1000).
     */
-
+    Species best("best");
+    best.addInstruction("if_enemy 9");
+    best.addInstruction("if_empty 7");
+    best.addInstruction("if_wall 3");
+    best.addInstruction("left");
+    best.addInstruction("go 0");
+    best.addInstruction("right");
+    best.addInstruction("go 0");
+    best.addInstruction("hop");
+    best.addInstruction("go 0");
+    best.addInstruction("infect");
+    best.addInstruction("go 0");
 
     Darwin board4(72, 72, 1000);
     
@@ -276,20 +287,14 @@ int main () {
         board4.addCreature(k, row, col);
     }
 
-    // //Best
-    // for(int i = 0; i < 10; ++i){
-    //     int pos = rand()%5184;
-    //     int row = pos/72;
-    //     int col = pos%72;
-    //     Creature k(best, rand()%4);
-    //     board4.addCreature(k, row, col);
-    // }
+    //Best
+    for(int i = 0; i < 10; ++i){
+        int pos = rand()%5184;
+        int row = pos/72;
+        int col = pos%72;
+        Creature k(best, rand()%4);
+        board4.addCreature(k, row, col);
+    }
 
-    // board4.simulate();
-
-
-
-
-
-
+    board4.simulate();
     return 0;}
